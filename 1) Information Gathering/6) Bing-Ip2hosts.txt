@@ -1,0 +1,41 @@
+⸻
+
+bing-ip2hosts
+
+🔗 Official tool page: https://www.kali.org/tools/bing-ip2hosts
+
+What is bing-ip2hosts?
+
+bing-ip2hosts is a penetration testing tool used for reverse IP lookups. Given an IP address, it queries Bing’s search engine to find domain names (hostnames) that resolve to the same IP. This helps identify other websites hosted on the same server.
+
+⸻
+
+Why is it used?
+	•	To discover virtual hosts sharing the same server/IP.
+	•	Useful for attack surface expansion (finding more possible targets).
+	•	Helps in shared hosting analysis to see what domains coexist on the same server.
+	•	Often used in penetration testing and reconnaissance stages to gather intelligence about a target.
+
+⸻
+
+How does it work?
+	•	The tool sends queries to Bing search engine with filters like ip:x.x.x.x.
+	•	Bing responds with domains indexed for that IP.
+	•	The tool collects and lists these domains.
+	•	Penetration testers can then check each domain for vulnerabilities.
+
+⸻
+
+Example usage
+
+bing-ip2hosts 192.168.1.10
+
+👉 This will return all domains Bing associates with the IP 192.168.1.10.
+
+⸻
+
+Official Reference
+	•	Tool Repo (archived): https://github.com/urbanadventurer/bing-ip2hosts
+	•	Note: The tool is not actively maintained. Bing has changed its API policies, so its functionality is limited or broken today. Modern alternatives include crt.sh, SecurityTrails, or Shodan for domain enumeration.
+
+⸻

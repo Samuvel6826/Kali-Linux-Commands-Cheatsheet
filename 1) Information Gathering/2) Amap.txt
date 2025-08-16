@@ -1,0 +1,69 @@
+⸻
+
+✅ Acknowledgement: AMAP (Application Mapper) – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/amap
+
+1) What is AMAP?
+
+AMAP is a service fingerprinting tool that identifies which application/protocol is running on a given TCP/UDP port, even when the service uses a non-standard port.
+
+2) Why use AMAP?
+	•	Detects real services behind open ports (avoids wrong assumptions).
+	•	Finds misconfigured/hidden services on unusual ports.
+	•	Complements port scanners (e.g., Nmap) with accurate service IDs.
+
+3) How does AMAP work?
+	1.	You provide target host/ports (often after an Nmap scan).
+	2.	AMAP sends crafted probes and reads the response/banner.
+	3.	It matches the response against its fingerprint database to name the service.
+
+⸻
+
+4) Exact Use Case (Lab Example)
+
+Context: Your macOS (M2) runs a Node.js app on http://localhost:3000; scanned from Kali (UTM).
+
+Command:
+
+amap -bqv 192.168.18.54 3000
+
+Flags:
+	•	-b print ASCII banner
+	•	-q hide closed ports
+	•	-v verbose
+
+Observed response:
+
+HTTP/1.1 400 Bad Request
+
+Interpretation: The server replied, confirming an HTTP service on port 3000 (non-standard for HTTP). AMAP successfully identified the application protocol behind the port.
+
+⸻
+
+5) Practical Workflow (Nmap ➜ AMAP)
+	1.	Find open ports
+
+nmap -p- <target>
+
+	2.	Fingerprint services on those ports
+
+amap -B <target> <port1> <port2> ...
+
+
+⸻
+
+6) Limitations
+	•	Fingerprint DB may be older than Nmap’s modern service detection.
+	•	Can trigger IDS/IPS (active probes).
+	•	Works best when combined with a prior port scan.
+
+⸻
+
+7) Summary
+	•	What: AMAP fingerprints services on TCP/UDP ports.
+	•	Why: To accurately identify real applications, especially on non-standard ports.
+	•	How: Probe ➜ banner/response ➜ fingerprint match.
+	•	Use case shown: Confirmed HTTP on port 3000 for a local Node.js app.
+
+⸻

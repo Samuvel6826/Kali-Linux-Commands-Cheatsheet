@@ -1,0 +1,90 @@
+⸻
+
+✅ Acknowledgement: arp-scan Tool – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/arp-scan
+
+⸻
+
+1) What is arp-scan?
+
+arp-scan is a network discovery tool that identifies active devices on a local network by sending ARP (Address Resolution Protocol) requests.
+Unlike ICMP (ping)-based tools, it works at Layer 2 (Data Link Layer), allowing it to detect hosts even when ICMP is blocked by firewalls.
+
+⸻
+
+2) Why use arp-scan?
+	•	Quickly maps IP ↔ MAC address relationships on a subnet.
+	•	Effective for host discovery in penetration testing and security assessments.
+	•	Useful for network inventory or troubleshooting (detecting unknown devices).
+	•	More reliable on local networks compared to ping sweeps.
+
+⸻
+
+3) How does arp-scan work?
+	1.	Sends ARP requests to every IP address in the target subnet.
+	2.	Hosts that are alive respond with their IP + MAC address.
+	3.	Output lists all discovered devices, including their hardware addresses and (if available) vendor information.
+
+⸻
+
+4) Exact Use Case (Lab Example)
+
+Context: Scanning from Kali Linux (VM in UTM) to detect devices on the local subnet (NAT mode).
+
+Command:
+
+sudo arp-scan -l
+
+Flags explained:
+	•	sudo → needed for raw socket access.
+	•	arp-scan → tool command.
+	•	-l → scan the entire local subnet of the active interface.
+
+Sample Output:
+
+192.168.64.1  76:a6:cd:eb:06:64  (Unknown: locally administered)
+
+👉 This shows the host at 192.168.64.1 is alive, with MAC address 76:a6:cd:eb:06:64.
+
+⚠️ Warning seen:
+
+WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
+
+Meaning vendor lookup failed due to permission issues. Can be fixed by adjusting file permissions or updating the OUI database.
+
+⸻
+
+5) Practical Workflow
+	1.	Scan local subnet:
+
+sudo arp-scan -l
+
+
+	2.	Scan a specific range:
+
+sudo arp-scan 192.168.64.0/24
+
+
+	3.	Save results for analysis:
+
+sudo arp-scan -l > hosts.txt
+
+
+
+⸻
+
+6) Limitations
+	•	Works only on local networks (cannot scan across routers).
+	•	Vendor detection depends on the availability of the OUI database.
+	•	Requires root privileges to function properly.
+
+⸻
+
+7) Summary
+	•	What: A Layer 2 tool for active host discovery using ARP requests.
+	•	Why: To identify all live hosts on a local subnet, even if ping is blocked.
+	•	How: Sends ARP requests ➜ receives replies ➜ lists IP & MAC addresses.
+	•	Use case shown: Detected devices in a NAT-based subnet of Kali VM (192.168.64.x).
+
+⸻

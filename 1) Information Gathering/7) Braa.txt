@@ -1,0 +1,63 @@
+⸻
+
+🔹 braa (SNMP Enumeration Tool)
+
+🔗 Official tool page: https://www.kali.org/tools/braa
+
+📌 What is braa?
+	•	braa is a SNMP (Simple Network Management Protocol) scanner.
+	•	It can query SNMP-enabled devices (routers, switches, printers, servers) to retrieve information such as:
+	•	OS and system details
+	•	Network interfaces
+	•	Uptime
+	•	Device configurations
+
+⸻
+
+⚙️ Installation
+
+On Kali Linux, braa is already included.
+If missing, install manually:
+
+sudo apt update && sudo apt install braa -y
+
+
+⸻
+
+🛠️ Usage Syntax
+
+braa [community]@[IP]:[OID]
+
+	•	community → Usually public (default read-only SNMP string).
+	•	IP → Target device IP address.
+	•	OID → Object Identifier (e.g., .1.3.6.* for basic system info).
+
+⸻
+
+🔍 Example Commands
+	1.	Scan a single host:
+
+braa public@192.168.64.1:.1.3.6.*
+
+→ Enumerates system details via SNMP.
+
+	2.	Scan your own machine (if SNMP is enabled):
+
+braa public@192.168.64.2:.1.3.6.*
+
+
+	3.	Bruteforce multiple hosts:
+
+braa public@192.168.64.0/24:.1.3.6.*
+
+
+
+⸻
+
+⚠️ Notes
+	•	SNMP must be enabled on the target device.
+	•	Default SNMP community string is often public.
+	•	If SNMP (UDP port 161) is closed, braa won’t return anything.
+	•	For testing, you can enable SNMP on a Linux VM or router.
+
+⸻

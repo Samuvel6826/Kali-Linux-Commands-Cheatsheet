@@ -1,0 +1,60 @@
+⸻
+
+✅ Acknowledgement: Network Interface & IP Discovery – Kali Linux
+
+I have successfully explored and practiced commands to identify both internal (private) and external (public) IP addresses in Kali Linux.
+
+⸻
+
+🔧 Practical Context:
+This test was performed from a Kali Linux VM to gather information about local network interfaces, assigned IP addresses, and the system’s public IP for reconnaissance and networking setup verification.
+
+⸻
+
+📌 Steps Performed:
+	•	Checked network interfaces & assigned IPs using:
+
+ip a
+
+Output showed:
+	•	Loopback interface (lo) – IP: 127.0.0.1
+	•	Ethernet interface (eth0) – Private IP: 192.168.64.2/24
+	•	Multiple IPv6 addresses (global & link-local).
+
+	•	Fetched public IP address using:
+
+curl ifconfig.me
+
+Output: 117.200.177.224 (Public IP).
+
+	•	Listed internal IP addresses only using:
+
+hostname -I
+
+Output: 192.168.64.2 (private) + IPv6 addresses.
+
+⸻
+
+🔍 Explanation of Commands:
+	•	ip a → Displays all network interfaces with IPv4 & IPv6 addresses.
+	•	curl ifconfig.me → Retrieves the public IP address from an external service.
+	•	hostname -I → Lists only assigned IP addresses (no extra interface details).
+
+⸻
+
+🧠 Concepts Learned:
+	•	Private IPs (e.g., 192.168.x.x) are used within LAN and are not directly accessible from the internet.
+	•	Public IPs are assigned by ISPs and are visible on the internet.
+	•	IPv6 addresses can be global, temporary, or link-local.
+	•	These commands are essential for network troubleshooting and reconnaissance in penetration testing.
+
+⸻
+
+💻 Environment Setup:
+	•	Host Machine: macOS (M2 Chip)
+	•	Guest OS: Kali Linux (ARM64 – 2025 Edition)
+	•	Virtualization: UTM (QEMU)
+	•	Network Mode: NAT
+	•	Interface Used: eth0
+
+⸻

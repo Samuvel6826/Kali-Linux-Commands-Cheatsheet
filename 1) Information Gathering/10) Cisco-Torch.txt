@@ -1,0 +1,110 @@
+⸻
+
+✅ Documentation: cisco-torch Tool – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/cisco-torch
+
+⸻
+
+1) What is cisco-torch?
+
+cisco-torch is a mass scanner designed specifically for discovering and fingerprinting Cisco network devices.
+It can scan for services such as Telnet, SSH, SNMP, HTTP, HTTPS, NTP, and TFTP and can also attempt dictionary-based attacks on these services.
+
+⸻
+
+2) Why use cisco-torch?
+	•	Quickly identify Cisco devices on a network.
+	•	Enumerate running services (Telnet, SSH, SNMP, HTTP, HTTPS, NTP, TFTP).
+	•	Perform service fingerprinting and vulnerability checks.
+	•	Automate SNMP community string brute-forcing and TFTP config file leeching.
+	•	Useful in penetration tests where Cisco equipment is deployed.
+
+⸻
+
+3) How does cisco-torch work?
+	1.	Uses forking to launch multiple scanning processes for efficiency.
+	2.	Performs application-layer fingerprinting for accuracy.
+	3.	Attempts service discovery and (optionally) brute force attacks on discovered services.
+	4.	Can download Cisco configuration files if SNMP read-write communities are found.
+
+⸻
+
+4) Exact Use Case (Example Command)
+
+Command:
+
+sudo cisco-torch -A 192.168.99.202
+
+Flags explained:
+	•	-A → run all fingerprint scan types.
+	•	-s → scan Cisco SSH service.
+	•	-t → scan Cisco Telnet service.
+	•	-u → scan SNMP service.
+	•	-w → scan Cisco Webserver (HTTP).
+	•	-c → Cisco Webserver with SSL (HTTPS).
+	•	-j → TFTP fingerprinting.
+	•	-n → NTP fingerprinting.
+	•	-g → attempt to download config/TFTP file.
+	•	-b → perform dictionary attacks.
+	•	-O → save output to file.
+
+Sample Output (from docs):
+
+* Cisco by SNMP found ***
+*System Description: Cisco Internetwork Operating System Software
+IOS (tm) 3600 Software (C3640-IK9O3S-M), Version 12.3(22), RELEASE SOFTWARE (fc2)
+Cisco-IOS Webserver found
+ HTTP/1.1 401 Unauthorized
+Server: cisco-IOS
+
+
+⸻
+
+5) Practical Workflow
+	1.	Discover Cisco devices in a subnet:
+
+sudo cisco-torch -A 10.10.0.0/24
+
+
+	2.	Scan only SSH with brute force using a host list:
+
+sudo cisco-torch -s -b -F sshtocheck.txt
+
+
+	3.	Scan Cisco webservers for HTTP Authorization vulnerability:
+
+sudo cisco-torch -w -z 10.10.0.0/16
+
+
+
+⸻
+
+6) Limitations
+	•	Focused only on Cisco devices (not general-purpose like nmap).
+	•	Requires root privileges for most scans.
+	•	SNMP/TFTP brute force attempts may generate alerts on IDS/IPS systems.
+	•	Some fingerprint DBs may be missing (e.g., fingerprint.db), requiring manual setup.
+
+⸻
+
+7) Status in Current Cybersecurity Workflow
+
+⚠️ Deprecated / Legacy Tool
+	•	cisco-torch is not actively maintained in modern pentesting distributions.
+	•	While it still exists in Kali Linux repos, professionals usually prefer tools like:
+	•	nmap with NSE scripts for Cisco discovery.
+	•	onesixtyone for SNMP sweeps.
+	•	hydra/medusa for brute force attempts.
+	•	It’s mainly useful for educational labs or when working with older Cisco devices, but in real-world engagements, it’s rarely used today.
+
+⸻
+
+8) Summary
+	•	What: Specialized mass scanner for Cisco devices.
+	•	Why: To discover Cisco hardware, enumerate services, and test for weak credentials or misconfigurations.
+	•	How: Uses parallel scanning + fingerprinting + optional brute force.
+	•	Status: ⚠️ Legacy/Deprecated – replaced by nmap NSE, hydra, onesixtyone.
+	•	Example: cisco-torch -A 192.168.99.202 identifies services and vulnerabilities on a Cisco router.
+
+⸻
