@@ -1,0 +1,135 @@
+⸻
+
+✅ Acknowledgement: DMitry (Deepmagic Information Gathering Tool) – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/dmitry
+
+⸻
+
+1) What is DMitry?
+
+DMitry is a lightweight command-line tool for reconnaissance. It can gather WHOIS data, Netcraft info, subdomains, emails, and open ports from a given domain/IP.
+
+⸻
+
+2) Why use DMitry?
+	•	One tool → multiple types of recon.
+	•	Helps map domain registration + hosting details.
+	•	Finds open services on a server.
+	•	Useful for footprinting phase in penetration testing.
+
+⸻
+
+3) How does DMitry work?
+	1.	Takes a domain/IP as input.
+	2.	Queries WHOIS (domain + IP block).
+	3.	Contacts Netcraft for hosting info.
+	4.	Performs search-engine lookups for emails/subdomains.
+	5.	Scans for open TCP ports.
+
+⸻
+
+4) Exact Use Case (Your Lab Example)
+
+Command:
+
+dmitry -winsepo pioneerkumaraswamycollege.com
+
+Flags used:
+	•	-w → WHOIS lookup
+	•	-i → IP WHOIS lookup
+	•	-n → Netcraft data
+	•	-s → Subdomain search
+	•	-e → Email search
+	•	-p → TCP port scan
+	•	-o → Save results to file
+
+Observed Results:
+
+🔹 Host Info:
+	•	Host IP → 208.91.199.87
+	•	Hostname → pioneerkumaraswamycollege.com
+
+🔹 IP WHOIS (inetnum block):
+	•	Range: 208.88.132.0 - 208.116.2.255
+	•	Netname: NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK
+	•	Status: Allocated Unspecified
+	•	Maintainer: RIPE-NCC-HM-MNT
+	•	Country: EU (actually worldwide hosting allocation)
+	•	Organization: IANA (Internet Assigned Numbers Authority)
+
+🔹 Domain WHOIS (pioneerkumaraswamycollege.com):
+	•	Registrar: PDR Ltd. (PublicDomainRegistry.com)
+	•	Created: 2014-10-17
+	•	Updated: 2024-10-18
+	•	Expiry: 2025-10-17
+	•	Domain Status: clientTransferProhibited
+	•	Nameservers:
+	•	NS1.BH-15.WEBHOSTBOX.NET
+	•	NS2.BH-15.WEBHOSTBOX.NET
+	•	DNSSEC: unsigned
+
+🔹 Netcraft Info:
+	•	Request sent to Netcraft → “Information gathered” (basic placeholder, not detailed in this output).
+
+🔹 Subdomain Search:
+	•	Google.com & Altavista.com checked.
+	•	Result: 0 subdomains found.
+
+🔹 Email Search:
+	•	Google.com & Altavista.com checked.
+	•	Result: 0 emails found.
+
+🔹 TCP Port Scan (on 208.91.199.87):
+	•	21/tcp → Open (FTP)
+	•	22/tcp → Open (SSH)
+	•	25/tcp → Open (SMTP)
+	•	26/tcp → Open (Alternate SMTP)
+	•	53/tcp → Open (DNS)
+	•	80/tcp → Open (HTTP)
+	•	110/tcp → Open (POP3)
+	•	143/tcp → Open (IMAP)
+	•	140 other ports scanned → Closed
+
+Interpretation:
+	•	Domain is registered & active (till 2025).
+	•	Hosted on a shared hosting provider block.
+	•	Common mail + web hosting stack visible (SMTP, POP3, IMAP, HTTP, DNS).
+	•	No publicly discoverable subdomains/emails.
+
+⸻
+
+5) Practical Workflow
+	1.	Install:
+
+sudo apt install dmitry
+
+	2.	Run WHOIS only:
+
+dmitry -w example.com
+
+	3.	Run full scan:
+
+dmitry -winsepo example.com
+
+	4.	Check saved output:
+
+cat example.com.txt
+
+⸻
+
+6) Limitations
+	•	Outdated subdomain/email search (Altavista no longer works).
+	•	No stealth – scans can be logged by target servers.
+	•	Netcraft integration minimal (returns generic “info gathered”).
+	•	Still okay for labs, but deprecated in professional workflows → replaced by tools like theHarvester, Amass, Recon-ng.
+
+⸻
+
+7) Summary
+	•	What: Recon tool combining WHOIS, DNS, Netcraft, email/subdomain searches, and port scan.
+	•	Why: Quick footprinting on domains/hosts.
+	•	How: Queries public databases + TCP scans.
+	•	Use case shown: Found registrar, DNS, hosting IP range, and 8 open ports on target domain.
+
+⸻

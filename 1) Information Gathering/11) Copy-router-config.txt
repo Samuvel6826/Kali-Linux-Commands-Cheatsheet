@@ -1,0 +1,82 @@
+
+✅ Acknowledgement: copy-router-config – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/copy-router-config
+
+⸻
+
+1) What is copy-router-config?
+copy-router-config is a network utility in Kali Linux used to download (backup) the running or startup configuration from a Cisco router using SNMP and TFTP. It helps in configuration auditing and backup for network security analysis.
+
+⸻
+
+2) Why use copy-router-config?
+• Backups: Safely store router configurations before making changes.
+• Security Audits: Inspect configuration for vulnerabilities (weak passwords, ACLs).
+• Disaster Recovery: Restore original configurations after crashes or misconfigurations.
+• Compliance: Maintain configuration history for audits.
+
+⸻
+
+3) How does copy-router-config work?
+1. Uses SNMP protocol to connect to the Cisco router.
+2. Requests the running-config or startup-config from the device.
+3. Transfers the config to a TFTP server (usually your Kali machine).
+4. Saves it as a text file for analysis or backup.
+
+⸻
+
+4) Exact Use Case (Lab Example)
+
+Context: You have a Cisco router at 192.168.1.1 and a Kali Linux machine acting as a TFTP server at 192.168.1.10.
+
+Command:
+copy-router-config --host 192.168.1.1 --community public --tftp 192.168.1.10
+
+Flags:
+• --host → IP of the router
+• --community → SNMP community string (like a password; default is usually public)
+• --tftp → IP of the TFTP server (your Kali machine)
+
+Observed Response:
+Connecting to router 192.168.1.1
+Requesting configuration...
+Saving configuration to TFTP server 192.168.1.10
+Configuration successfully copied.
+
+Interpretation:
+The running configuration of the Cisco router was successfully backed up to the TFTP server on Kali.
+
+⸻
+
+5) Practical Workflow
+1. Install TFTP server on Kali
+   sudo apt install atftpd
+   sudo systemctl enable atftpd
+   sudo systemctl start atftpd
+
+2. Run copy-router-config to download the config
+   copy-router-config --host <router-ip> --community <community> --tftp <kali-ip>
+
+3. Check saved config in /var/lib/tftpboot/ on Kali.
+
+4. (Optional) Restore configuration using:
+   merge-router-config --host <router-ip> --community <community> --tftp <kali-ip> --file <backup.cfg>
+
+⸻
+
+6) Limitations
+• Works only with Cisco routers supporting SNMP.
+• Requires SNMP access and community string (not secure if misused).
+• Needs TFTP server running and accessible.
+• Can be detected by IDS/IPS (active SNMP queries).
+
+⸻
+
+7) Summary
+• What: Backup Cisco router configurations using SNMP and TFTP.
+• Why: For auditing, backup, and recovery purposes.
+• How: SNMP query → Router sends config → Stored on TFTP server.
+• Use case shown: Backed up Cisco router config to Kali TFTP server.
+
+⸻

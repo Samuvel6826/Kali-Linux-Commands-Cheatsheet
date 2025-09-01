@@ -1,0 +1,77 @@
+✅ Acknowledgement: DNSMAP – Kali Linux
+
+🔗 Official tool page: https://www.kali.org/tools/dnsmap
+
+----------------------------------------------------
+1) What is DNSMAP?
+DNSMAP is a subdomain brute-forcing tool used to discover subdomains of a target domain. 
+It uses a wordlist-based approach to guess possible subdomains and resolves them to IP addresses if they exist.
+
+----------------------------------------------------
+2) Why use DNSMAP?
+• To discover hidden or internal subdomains of a domain.
+• Helps in attack surface mapping for penetration testing.
+• Works well with other reconnaissance tools like dnsenum.
+
+----------------------------------------------------
+3) How does DNSMAP work?
+1. You provide a domain name and a wordlist.
+2. DNSMAP appends each word from the list as a possible subdomain.
+3. It sends DNS queries for each subdomain.
+4. Displays valid subdomains that resolve to an IP address.
+
+----------------------------------------------------
+4) Exact Use Case (Lab Example)
+Context: You want to find subdomains of example.com using a wordlist.
+
+Command:
+dnsmap example.com
+
+Optional flags:
+- -w → Path to custom wordlist.
+- -r → Recursive brute force.
+- -d → Delay between requests.
+
+Example with custom wordlist and delay:
+dnsmap example.com -w /usr/share/wordlists/dnsmap.txt -d 3
+
+----------------------------------------------------
+5) Expected Output:
+dnsmap 0.30 - DNS Network Mapper
+
+[+] target domain: example.com
+[+] using built-in wordlist
+[+] resolving subdomains:
+-------------------------------------
+Found: mail.example.com -> 93.184.216.120
+Found: www.example.com  -> 93.184.216.119
+Found: ftp.example.com  -> 93.184.216.121
+-------------------------------------
+[+] Total valid subdomains found: 3
+
+----------------------------------------------------
+6) How to interpret results:
+• 'Found:' Indicates the subdomain exists and is live.
+• The IP address shown is where the subdomain resolves to.
+
+----------------------------------------------------
+7) Practical Workflow:
+1. Run dnsmap with the default list:
+   dnsmap example.com
+2. Use a custom wordlist for better results:
+   dnsmap example.com -w /path/to/customlist.txt
+3. Add delay to avoid detection or rate-limiting:
+   dnsmap example.com -d 2
+
+----------------------------------------------------
+8) Limitations:
+• Only works based on the wordlist quality.
+• Does not use DNS zone transfer or WHOIS (unlike dnsenum).
+• Brute force can be slow for large lists.
+
+----------------------------------------------------
+9) Summary:
+• What: DNSMAP finds subdomains using brute force.
+• Why: To uncover hidden subdomains and expand attack surface.
+• How: Wordlist-based brute force ➜ DNS query ➜ Valid subdomains.
+• Use Case: Found mail, www, and ftp subdomains for example.com.
