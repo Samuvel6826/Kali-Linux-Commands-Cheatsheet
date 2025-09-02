@@ -1,0 +1,91 @@
+⸻
+
+✅ Acknowledgement: enum4linux – SMB/NetBIOS Enumeration Tool (Kali Linux)
+🔗 Official Tool Page: https://www.kali.org/tools/enum4linux/
+
+⸻
+	1.	What is enum4linux?
+enum4linux is a Linux-based tool used to enumerate information from Windows systems via SMB (Server Message Block) and NetBIOS services. It automates common enumeration steps such as retrieving users, groups, shares, and policies.
+
+⸻
+	2.	Why use it?
+
+	•	Discover users and groups.
+	•	Enumerate SMB shares.
+	•	Extract OS and domain information.
+	•	Identify password policies.
+	•	Test for NULL sessions (anonymous access).
+
+⸻
+	3.	How does enum4linux work?
+
+	1.	Connects to the target over SMB/NetBIOS (ports 139/445).
+	2.	Attempts NULL session login (username = “”, password = “”).
+	3.	Queries for:
+	•	Workgroup/domain details
+	•	Users and groups
+	•	Shares
+	•	OS version and policies
+	4.	Displays results for penetration testing or auditing.
+
+⸻
+	4.	Exact Use Case (Lab Example)
+
+Command executed:
+
+enum4linux -a example.com
+
+Observed Output:
+	•	Target: example.com
+	•	Known usernames tested: administrator, guest, krbtgt, domain admins, root, bin, none
+	•	Workgroup/Domain: ❌ Not found
+	•	Nbtstat Info: ❌ No reply from IP 23.220.75.245
+	•	SMB Session: ❌ Server does not allow NULL session (username '' password '')
+
+Interpretation:
+	•	The target does not allow anonymous SMB logins.
+	•	No users, shares, or domain information could be extracted.
+	•	This is a secure/default configuration, preventing enumeration.
+
+⸻
+	5.	Practical Workflow
+
+	•	Run aggressive mode (all checks):
+
+enum4linux -a target.com
+
+	•	Enumerate only users:
+
+enum4linux -U target.com
+
+	•	Enumerate only shares:
+
+enum4linux -S target.com
+
+	•	Enumerate OS/domain info:
+
+enum4linux -o target.com
+
+⸻
+	6.	Limitations
+
+	•	Works better on older Windows versions (2000/2003/XP).
+	•	Modern Windows + hardened SMB usually block NULL sessions (as seen in your test).
+	•	Output may be empty against properly secured servers.
+	•	enum4linux-ng is faster and supports JSON output for modern workflows.
+
+⸻
+	7.	Summary
+
+	•	What: enum4linux checks Windows hosts via SMB/NetBIOS for users, shares, and policies.
+	•	Why: Helps identify attack vectors in misconfigured Windows systems.
+	•	How: Uses SMB queries + NULL sessions.
+	•	Lab Use Case: example.com rejected all attempts → no enumeration possible (✔ Secure).
+
+⸻
+
+👉 In short:
+Your result = Safe ✅ → The server did not allow SMB enumeration.
+enum4linux is still useful for CTFs/OSCP labs, but in real-world pentests, professionals rely more on enum4linux-ng, CrackMapExec, or Impacket for broader coverage.
+
+⸻

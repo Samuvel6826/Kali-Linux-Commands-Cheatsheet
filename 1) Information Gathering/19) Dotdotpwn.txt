@@ -1,0 +1,82 @@
+⸻
+
+✅ Acknowledgement: dotdotpwn – Directory Traversal Fuzzer (Kali Linux)
+🔗 Official Tool Page: https://www.kali.org/tools/dotdotpwn/
+
+⸻
+	1.	What is dotdotpwn?
+dotdotpwn is a directory traversal fuzzer that tests whether a target web or network service is vulnerable to path traversal attacks (../etc/passwd). It works against HTTP, FTP, TFTP, SMB, and local files.
+
+⸻
+	2.	Why use it?
+
+	•	Detect directory traversal vulnerabilities.
+	•	Attempt to read sensitive files like /etc/passwd (Linux) or boot.ini (Windows).
+	•	Useful for penetration testing and vulnerability assessments.
+
+⸻
+	3.	How does dotdotpwn work?
+
+	1.	Takes a hostname + vulnerable parameter endpoint.
+	2.	Generates thousands of traversal payloads (slashes, backslashes, URL-encoded).
+	3.	Sends them to the server.
+	4.	Checks if known keywords (e.g., “root” in /etc/passwd) appear in responses.
+
+⸻
+	4.	Exact Use Case (Lab Example)
+
+Command:
+
+dotdotpwn -m http -h example.com -u /index.php?page= -k passwd
+
+Observed Output:
+	•	Target: example.com (Port 80)
+	•	Total Payloads: 11,028
+	•	Results:
+	•	Multiple 403 Forbidden responses for /../../etc/passwd and /../../etc/issue.
+	•	Multiple 404 Not Found responses for encoded backslash payloads.
+
+Interpretation:
+	•	No traversal vulnerability detected.
+	•	Server is correctly blocking attempts to read sensitive files.
+
+⸻
+	5.	Practical Workflow
+
+	•	Test HTTP parameter:
+
+dotdotpwn -m http -h target.com -u /vuln.php?file= -k passwd
+
+	•	Test FTP:
+
+dotdotpwn -m ftp -h target.com
+
+	•	Test TFTP:
+
+dotdotpwn -m tftp -h target.com
+
+	•	Generate payloads only:
+
+dotdotpwn -m stdout
+
+⸻
+	6.	Limitations
+
+	•	Old tool, slower compared to modern fuzzers (ffuf, wfuzz).
+	•	May generate many false positives if keyword is too generic.
+	•	Some WAFs/IDS block traversal attempts immediately.
+
+⸻
+	7.	Summary
+
+	•	What: dotdotpwn fuzzes for directory traversal vulnerabilities.
+	•	Why: To check if a web app/server allows access to restricted files.
+	•	How: Sends thousands of traversal payloads (../) and looks for success indicators.
+	•	Use Case: example.com blocked all attempts (403/404), meaning no vulnerability found.
+
+⸻
+
+👉 In short:
+dotdotpwn = good for legacy labs & CTFs, but in real-world pentests, testers often prefer ffuf, gobuster, or wfuzz for faster directory traversal + file discovery.
+
+⸻

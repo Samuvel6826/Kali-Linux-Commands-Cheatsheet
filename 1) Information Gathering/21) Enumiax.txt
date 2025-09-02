@@ -1,0 +1,95 @@
+⸻
+
+✅ Acknowledgement: enumIAX – VoIP (Inter-Asterisk Exchange) Extension Enumerator (Kali Linux)
+🔗 Official Tool Page: https://www.kali.org/tools/enumiax/
+
+⸻
+
+1. What is enumIAX?
+
+enumIAX is a command-line tool that enumerates valid extensions on servers running the IAX protocol (Inter-Asterisk eXchange), which is widely used in VoIP systems based on Asterisk PBX.
+It helps identify active VoIP accounts/extensions that could be leveraged for attacks such as brute-force or toll fraud.
+
+⸻
+
+2. Why use it?
+	•	🔎 Discover valid VoIP extensions.
+	•	🔐 Assess PBX/Asterisk server security posture.
+	•	⚠️ Identify accounts vulnerable to password brute-force.
+	•	📞 Valuable in VoIP penetration tests and telecom security audits.
+
+⸻
+
+3. How does enumIAX work?
+	1.	Sends crafted IAX requests to a target PBX server.
+	2.	Iterates through a list or range of possible extensions.
+	3.	Analyzes server responses to determine which extensions exist.
+	4.	Reports discovered valid extensions.
+
+⸻
+
+4. Exact Use Case (Lab Example)
+
+Command:
+
+enumiax -d 10.10.10.50 -u 1000-1100
+
+Explanation:
+	•	-d → Target IP/domain (e.g., PBX server).
+	•	-u → Range of extensions (1000–1100).
+
+Sample Output (Lab):
+
+[+] Extension 1001 found
+[+] Extension 1005 found
+[-] Extension 1010 not valid
+
+Interpretation:
+	•	Extensions 1001 and 1005 are active.
+	•	An attacker could attempt password brute-force against these accounts.
+
+⸻
+
+5. Practical Workflow
+	•	Enumerate with numeric range:
+
+enumiax -d targetpbx.com -u 200-300
+
+
+	•	Use custom wordlist:
+
+enumiax -d targetpbx.com -w extensions.txt
+
+
+	•	Verbose output:
+
+enumiax -d targetpbx.com -u 1000-1100 -v
+
+
+
+⸻
+
+6. Limitations / Constraints
+
+⚠️ Important constraints in real-world use:
+	•	Works only against IAX protocol (not SIP).
+	•	Requires the target to be a PBX/Asterisk server with IAX enabled.
+	•	Running it against normal web domains (e.g., example.com) produces no results (since no IAX service exists).
+	•	On a Mac/Kali setup, you can run the tool, but to see meaningful results, you must test against a lab PBX (e.g., Asterisk in a VM/Docker).
+	•	Not a brute-forcer → it only discovers valid extensions, not passwords.
+	•	May trigger alerts in VoIP IDS/IPS systems.
+
+⸻
+
+7. Summary
+	•	What: Enumerates VoIP/IAX extensions on PBX servers.
+	•	Why: Helps detect exposed/valid accounts for VoIP security audits.
+	•	How: Sends IAX extension probes and checks responses.
+	•	Use Case: On example.com → no results (no IAX service). On a lab PBX → valid extensions can be enumerated.
+
+⸻
+
+👉 In short:
+enumIAX is mainly useful in VoIP security labs/CTFs. In real-world pentests, it’s often combined with SIPVicious, svmap, and Nmap SIP scripts for complete VoIP footprinting.
+
+⸻

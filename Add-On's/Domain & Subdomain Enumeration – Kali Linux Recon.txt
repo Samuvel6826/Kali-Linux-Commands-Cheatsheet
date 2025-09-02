@@ -1,7 +1,6 @@
 ⸻
 
 ✅ Acknowledgement: Domain & Subdomain Enumeration – Kali Linux Recon
-
 🔗 Official Reference: Hackertarget HostSearch
 
 ⸻
@@ -28,60 +27,55 @@ Subdomain enumeration is the process of identifying subdomains associated with a
 
 ⸻
 
-4) Exact Use Case (Your Lab Example)
+4) Exact Use Case (Lab Example)
 
 Command (subdomain enumeration):
 
-curl -s "https://api.hackertarget.com/hostsearch/?q=pioneerkumaraswamycollege.com"
+curl -s "https://api.hackertarget.com/hostsearch/?q=example.com"
 
-Observed Output:
+Observed Output (Example):
 
-cpanel.pioneerkumaraswamycollege.com,208.91.199.87  
-cpcalendars.pioneerkumaraswamycollege.com,208.91.199.87  
-cpcontacts.pioneerkumaraswamycollege.com,208.91.199.87  
-webdisk.pioneerkumaraswamycollege.com,208.91.199.87  
-webmail.pioneerkumaraswamycollege.com,208.91.199.87  
+cpanel.example.com,93.184.216.34
+webmail.example.com,93.184.216.34
+ftp.example.com,93.184.216.34
 
 Next steps:
 	•	Checked headers:
 
-curl -I http://cpanel.pioneerkumaraswamycollege.com
+curl -I http://cpanel.example.com
 
-	•	Found server type + cookies.
-	•	WHOIS for IP 208.91.199.87: Hosted by PDR Ltd. / PublicDomainRegistry (USA).
+	•	WHOIS for IP 93.184.216.34: Hosted by IANA / Reserved for documentation.
 	•	WhatWeb Fingerprinting:
-
-Bootstrap 4.5.0, 5.3.0  
-jQuery 3.5.1, 3.6.0  
-nginx/1.25.5  
-Country: Virgin Islands (British)  
-Email Found: pioneercollege67@gmail.com  
+	•	nginx/1.25.x
+	•	Bootstrap 4.5.0
+	•	jQuery 3.6.0
 
 ⸻
 
 5) Practical Workflow
 	1.	Find subdomains:
 
-curl -s "https://api.hackertarget.com/hostsearch/?q=target.com"
+curl -s "https://api.hackertarget.com/hostsearch/?q=example.com"
 
 	2.	Inspect headers:
 
-curl -I http://subdomain.target.com
+curl -I http://subdomain.example.com
 
 	3.	WHOIS check:
 
-whois 208.91.199.87
+whois 93.184.216.34
 
 	4.	Technology fingerprint:
 
-whatweb target.com
+whatweb example.com
+
 
 ⸻
 
 6) Limitations
 	•	Hackertarget API is rate-limited (too many queries → blocked).
 	•	Only shows publicly indexed subdomains (not hidden ones).
-	•	WhatWeb may not detect obfuscated/minified JS frameworks.
+	•	WhatWeb may miss obfuscated/minified JS frameworks.
 	•	Professional testers often use Amass, Sublist3r, assetfinder for deeper scans.
 
 ⸻
@@ -90,21 +84,18 @@ whatweb target.com
 	•	What: Subdomain & domain recon using Hackertarget + WhatWeb.
 	•	Why: Identify hidden subdomains, hosting provider, technologies, and contact emails.
 	•	How: Queried API, checked headers, fingerprinted stack.
-	•	Use case shown: Found 5 active subdomains, hosting on PDR, tech stack = nginx + Bootstrap + jQuery, and an exposed email.
+	•	Use case shown: Found active subdomains, detected server stack (nginx + Bootstrap + jQuery), and confirmed hosting.
 
 ⸻
 
-👉 This complements your DMitry recon:
-	•	DMitry gave WHOIS + ports.
-	•	Hackertarget + WhatWeb gave real subdomains + stack info.
+👉 This complements other recon tools:
+	•	DMitry → WHOIS + ports.
+	•	Hackertarget + WhatWeb → Subdomains + tech stack.
+	•	Amass/Sublist3r → More comprehensive modern enumeration.
 
-✅ So, in practice today:
-	•	DMitry = legacy/basic tool → often used in labs to demonstrate footprinting.
-	•	Hackertarget = modern OSINT source → more accurate for subdomains, DNS, and headers.
-	•	Professionals usually combine Hackertarget with Amass, Sublist3r, assetfinder, Recon-ng for serious bug bounty / pentesting.
-
-	👉 You can say:
-	•	“DMitry is not fully deprecated, but outdated for subdomain/email enumeration.”
-	•	“Hackertarget and other modern tools have largely replaced DMitry in real-world workflows.”
+✅ Real-world note:
+	•	DMitry = legacy/basic → good for labs.
+	•	Hackertarget & modern tools = practical OSINT sources.
+	•	Today, Hackertarget is often used in combination with Amass, Sublist3r, Recon-ng for professional bug bounty and pentesting.
 
 ⸻

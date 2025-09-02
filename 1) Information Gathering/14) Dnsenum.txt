@@ -21,44 +21,40 @@ dnsenum is a DNS information-gathering tool that automates the process of:
 	•	Helps map out a domain’s DNS infrastructure.
 	•	Can reveal hidden subdomains (via brute-force).
 	•	Tests for misconfigured DNS servers (zone transfer).
-	•	Assists in footprinting during penetration testing.
+	•	Assists in the footprinting phase of penetration testing.
 
 ⸻
 
 3) How does dnsenum work?
-	1.	You give it a domain name.
+	1.	You provide a domain name.
 	2.	It queries DNS records (A, MX, NS, etc.).
-	3.	Tries AXFR (zone transfer) on name servers.
+	3.	Attempts AXFR (zone transfer) on name servers.
 	4.	Uses Google scraping & brute-force wordlists to find subdomains.
-	5.	Runs WHOIS lookups and reverse DNS lookups.
+	5.	Performs WHOIS lookups and reverse DNS lookups.
 
 ⸻
 
 4) Exact Use Case (Lab Example)
 
-🔹 Context: You want to enumerate the domain pioneerkumaraswamycollege.com.
-
 Command:
 
-dnsenum --enum pioneerkumaraswamycollege.com
+dnsenum --enum example.com
 
-🔹 Observed Output (Summary):
+Observed Output (Sample Results):
 	•	Host Address:
-pioneerkumaraswamycollege.com → 208.91.199.87
+	•	example.com → 93.184.216.34
 	•	Name Servers:
-ns1.bh-15.webhostbox.net → 208.91.199.87
-ns2.bh-15.webhostbox.net → 208.91.199.87
-	•	Mail Server:
-pioneerkumaraswamycollege.com → 208.91.199.87
+	•	a.iana-servers.net → 199.43.135.53
+	•	b.iana-servers.net → 199.43.133.53
+	•	Mail Server (MX):
+	•	No MX records (example.com does not handle mail).
 	•	Zone Transfer:
-Attempted → AXFR failed (REFUSED) ✅ (this is good security).
-	•	Brute-forced Subdomains Found:
-	•	ftp.pioneerkumaraswamycollege.com → 208.91.199.87
-	•	mail.pioneerkumaraswamycollege.com → Alias to main domain
-	•	webmail.pioneerkumaraswamycollege.com → 208.91.199.87
-	•	www.pioneerkumaraswamycollege.com → Alias to main domain
+	•	Attempted → AXFR failed (REFUSED) ✅ (this is expected for security).
+	•	Brute-forced Subdomains Found (if using a wordlist):
+	•	www.example.com → 93.184.216.34
+	•	ftp.example.com → Not resolved (sample wordlist)
 	•	WHOIS / Reverse Lookup:
-IP range found: 208.91.198.0/23
+	•	IP → Registered with Internet Assigned Numbers Authority (IANA)
 
 ⸻
 
@@ -79,7 +75,7 @@ dnsenum --enum example.com
 dnsenum --axfr example.com
 
 
-	4.	Use your own wordlist for brute-force:
+	4.	Use a custom wordlist for brute-force:
 
 dnsenum -f wordlist.txt example.com
 
@@ -89,16 +85,16 @@ dnsenum -f wordlist.txt example.com
 
 6) Limitations
 	•	Zone transfers often fail (most servers refuse AXFR).
-	•	Google scraping may be blocked (as in your scan).
-	•	Only as good as the subdomain wordlist.
-	•	Public WHOIS may hide ownership due to privacy protection.
+	•	Google scraping may be blocked.
+	•	Subdomain discovery is limited by the quality of the wordlist.
+	•	WHOIS records may hide ownership details (due to privacy/GDPR).
 
 ⸻
 
 7) Summary
 	•	What: dnsenum is a DNS reconnaissance tool.
-	•	Why: To gather DNS infrastructure info, subdomains, MX, NS, and test for zone transfers.
-	•	How: Queries DNS records, brute-force, WHOIS, reverse lookups.
-	•	Use Case: Enumerated DNS records for pioneerkumaraswamycollege.com with discovered subdomains.
+	•	Why: To gather DNS infrastructure info, discover subdomains, identify MX/NS records, and test for zone transfers.
+	•	How: Queries DNS records, brute-force subdomains, WHOIS, reverse lookups.
+	•	Use Case (Lab): Enumerated DNS records for example.com with NS records, IP address, and tested zone transfer.
 
 ⸻

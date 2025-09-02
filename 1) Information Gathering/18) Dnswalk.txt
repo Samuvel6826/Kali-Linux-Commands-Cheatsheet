@@ -1,0 +1,94 @@
+⸻
+
+✅ Acknowledgement: dnswalk – DNS Database Auditing Tool (Kali Linux)
+🔗 Official page: https://www.kali.org/tools/dnswalk/
+
+⸻
+
+1) What is dnswalk?
+
+dnswalk is a DNS database auditing and troubleshooting tool. It performs zone transfers and checks DNS data for consistency, correctness, and potential misconfigurations.
+
+⸻
+
+2) Why use dnswalk?
+	•	To verify DNS records for errors, misconfigurations, and inconsistencies.
+	•	To attempt zone transfers and see if sensitive DNS data is exposed.
+	•	Useful for security auditors and network administrators to strengthen DNS security.
+
+⸻
+
+3) How does dnswalk work?
+	1.	You provide a domain name.
+	2.	dnswalk queries DNS servers for available records.
+	3.	It attempts a zone transfer (AXFR) and validates DNS data.
+	4.	It reports issues such as:
+	•	Missing records
+	•	Duplicate entries
+	•	Syntax errors
+	•	Insecure configurations
+
+⸻
+
+4) Exact Use Case (Lab Example)
+
+Context: Check DNS integrity for example.com.
+
+Command:
+
+dnswalk example.com
+
+Flags:
+	•	-r → Recursively descend sub-domains.
+	•	-d → Debugging output.
+	•	-a → Perform all tests (consistency, syntax, etc.).
+
+Observed Response (example):
+
+examining zone: example.com
+; Checking SOA record...
+; Checking NS records...
+; No zone transfer allowed (AXFR refused).
+; No errors found in example.com zone.
+
+Interpretation:
+	•	SOA record → The Start of Authority (who manages the domain).
+	•	NS records → DNS name servers are verified.
+	•	AXFR refused → Zone transfer blocked (good security practice).
+	•	No errors → DNS zone configuration is consistent.
+
+⸻
+
+5) Practical Workflow
+	1.	Install (if not pre-installed):
+
+sudo apt update && sudo apt install dnswalk
+
+
+	2.	Run dnswalk on a domain:
+
+dnswalk -a example.com
+
+
+	3.	If AXFR (zone transfer) is allowed, it will list all DNS records. Otherwise, it will return REFUSED, which is the secure case.
+
+⸻
+
+6) Limitations
+	•	Requires zone transfer permission; most modern DNS servers block AXFR by default.
+	•	Cannot brute-force subdomains like dnsenum or dnsrecon.
+	•	Primarily checks data integrity, not enumeration.
+
+⸻
+
+7) Summary
+	•	What: DNS auditing tool for integrity checks.
+	•	Why: To detect misconfigurations, insecure DNS setups, or accidental zone transfer exposure.
+	•	How: By querying DNS servers, attempting AXFR, and validating records.
+	•	Use Case: Tested with example.com → No zone transfer, DNS records intact.
+
+⸻
+
+⚡ This tool is best seen as a DNS auditor, while tools like dnsenum / dnsrecon are better for subdomain enumeration.
+
+⸻

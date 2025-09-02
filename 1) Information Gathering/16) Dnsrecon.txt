@@ -23,37 +23,34 @@ dnsrecon is a DNS enumeration and reconnaissance tool that performs comprehensiv
 	1.	You specify a domain.
 	2.	It queries authoritative name servers.
 	3.	Collects DNS records: A, MX, TXT, NS, SOA, etc.
-	4.	Attempts zone transfers.
+	4.	Attempts zone transfers (AXFR).
 	5.	Optionally brute-forces subdomains with a wordlist.
 
 ⸻
 
 4) Exact Use Case (Lab Example)
 
-🔹 Context: Run general enumeration on pioneerkumaraswamycollege.com.
-
 Command:
 
-dnsrecon -d pioneerkumaraswamycollege.com
+dnsrecon -d example.com
 
-🔹 Observed Output (Summary):
+Observed Output (Sample Results):
 	•	DNSSEC: Not configured.
 	•	SOA Record:
-ns1.bh-15.webhostbox.net → 208.91.199.87
+	•	a.iana-servers.net → 199.43.135.53
 	•	Name Servers (NS):
-ns1.bh-15.webhostbox.net → 208.91.199.87
-ns2.bh-15.webhostbox.net → 208.91.199.87
-	•	Bind Version Leak:
-Both servers revealed → "BIND 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.16"
-⚠️ (Fingerprinting risk – attackers can look up known exploits for this version).
+	•	a.iana-servers.net → 199.43.135.53
+	•	b.iana-servers.net → 199.43.133.53
 	•	Mail Server (MX):
-pioneerkumaraswamycollege.com → 208.91.199.87
+	•	None (example.com does not handle mail).
 	•	A Record (Website):
-pioneerkumaraswamycollege.com → 208.91.199.87
+	•	example.com → 93.184.216.34
 	•	TXT Records:
-	•	SPF Policy → v=spf1 a mx include:webhostbox.net ~all
-	•	Google Site Verification → ONr6SctwBgqa2NBmC08LAKbbiqNAvVd4Jw1iLzdMUtM
-	•	SRV Records: None found.
+	•	“v=spf1 -all” (SPF policy rejecting mail).
+	•	SRV Records:
+	•	None found.
+
+⚠️ Note: In real-world targets, dnsrecon may also leak BIND version info from misconfigured DNS servers.
 
 ⸻
 
@@ -73,7 +70,7 @@ dnsrecon -d example.com -t axfr
 dnsrecon -r 192.168.1.0-192.168.1.255
 
 
-	4.	Brute force subdomains with a custom wordlist:
+	4.	Brute-force subdomains with a custom wordlist:
 
 dnsrecon -d example.com -D wordlist.txt -t brt
 
@@ -82,9 +79,10 @@ dnsrecon -d example.com -D wordlist.txt -t brt
 ⸻
 
 6) Limitations
-	•	Zone transfer success depends on misconfigured DNS servers.
+	•	Zone transfer success depends on DNS server misconfiguration (rare today).
 	•	Requires internet or network access to query DNS records.
-	•	Google scraping may be blocked (similar to dnsenum).
+	•	Brute-forcing depends on the quality of the wordlist.
+	•	Google scraping (if enabled) may be blocked.
 
 ⸻
 
@@ -92,12 +90,12 @@ dnsrecon -d example.com -D wordlist.txt -t brt
 	•	What: dnsrecon = DNS record enumeration tool.
 	•	Why: To detect leaks in DNS info, misconfigurations, and hidden services.
 	•	How: Queries DNS records, checks DNSSEC, attempts zone transfer, brute-forces subdomains.
-	•	Use Case: Discovered NS, MX, TXT, and even BIND version leaks for pioneerkumaraswamycollege.com.
+	•	Use Case (Lab): Enumerated DNS for example.com and confirmed NS, SOA, TXT, and A records.
 
 ⸻
 
 ⚡ Key difference:
 	•	dnsenum → brute-force & wordlist-focused, older.
-	•	dnsrecon → modern, can also fingerprint versions (like BIND), checks DNSSEC, more flexible.
+	•	dnsrecon → modern, also fingerprints DNS versions (BIND), checks DNSSEC, more flexible.
 
 ⸻

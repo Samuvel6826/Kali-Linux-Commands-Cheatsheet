@@ -1,0 +1,93 @@
+⸻
+
+✅ Acknowledgement: dnstracer – DNS Trace Utility (Kali Linux)
+🔗 Official Tool Page: https://www.kali.org/tools/dnstracer/
+
+⸻
+
+1) What is dnstracer?
+
+dnstracer is a command-line tool that traces the path DNS queries take to resolve a given domain. It starts from a chosen DNS server (like root servers or public resolvers) and follows the delegation chain until it reaches the authoritative server for the target domain.
+
+⸻
+
+2) Why use dnstracer?
+	•	Understand how DNS resolution works step by step.
+	•	Identify where DNS issues (misconfigurations, delays) may occur.
+	•	See the delegation path from root servers → TLD servers → authoritative servers.
+	•	Useful for network troubleshooting and penetration testing (detecting DNS misconfigurations).
+
+⸻
+
+3) How does dnstracer work?
+	1.	You provide a domain (e.g., example.com).
+	2.	dnstracer queries a DNS server (default = your local resolver).
+	3.	It traces through the DNS hierarchy until it reaches the authoritative nameserver.
+	4.	Displays each server in the chain.
+
+⸻
+
+4) Exact Use Case (Lab Example)
+
+Command:
+
+dnstracer -s 8.8.8.8 example.com
+
+Flags:
+	•	-s → Start query from a specific DNS server (e.g., 8.8.8.8 = Google DNS, a.root-servers.net = root server).
+	•	-v → Verbose mode (shows detailed responses).
+	•	-q → Set query type (A, MX, NS, etc.).
+
+Observed Output (Example):
+
+Tracing to example.com[a] via 8.8.8.8
+8.8.8.8 (google-public-dns-a.google.com) 
+↓
+a.root-servers.net (Root Server) 
+↓
+b.gtld-servers.net (.com TLD Server) 
+↓
+ns.icann.org (Authoritative Server for example.com) 
+↓
+example.com → 93.184.216.34
+
+Interpretation:
+	•	Each line shows a DNS server that participated in resolving the domain.
+	•	The last line is the authoritative server response with the final IP.
+
+⸻
+
+5) Practical Workflow
+	1.	Install dnstracer:
+
+sudo apt install dnstracer
+
+	2.	Trace domain resolution via Google DNS:
+
+dnstracer -s 8.8.8.8 example.com
+
+	3.	Trace via Root Servers for full delegation chain:
+
+dnstracer -s a.root-servers.net example.com
+
+	4.	Verbose output (detailed query/response):
+
+dnstracer -v -s 8.8.8.8 example.com
+
+
+⸻
+
+6) Limitations
+	•	Won’t directly list subdomains (only shows resolution chain).
+	•	Output may vary if local DNS cache resolves the query instantly.
+	•	Cannot bypass DNSSEC or hidden authoritative setups.
+
+⸻
+
+7) Summary
+	•	What: dnstracer shows the DNS delegation path for a domain.
+	•	Why: To analyze DNS resolution, troubleshoot misconfigurations, and study how queries flow.
+	•	How: Traces DNS servers from root/TLD to authoritative.
+	•	Use Case: Checked DNS resolution path for example.com.
+
+⸻
