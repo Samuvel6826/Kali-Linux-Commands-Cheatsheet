@@ -1,0 +1,91 @@
+⸻
+
+✅ Acknowledgement: InTrace – Traceroute via TCP Connections (Kali Linux)
+
+🔗 Official Tool Page: https://www.kali.org/tools/intrace/
+
+⸻
+
+1. What is InTrace?
+
+InTrace is a network reconnaissance tool that performs traceroute using active TCP connections. Unlike the classic traceroute or tracert (which use ICMP/UDP), InTrace leverages existing TCP connections to map the path between a client and a server.
+
+It was designed to work stealthily by reusing active sessions, making it harder to detect compared to traditional traceroute methods.
+
+⸻
+
+2. Why use it?
+	•	To identify intermediate routers/firewalls between you and a target host.
+	•	To map the network path in environments where ICMP/UDP packets are blocked.
+	•	Useful in penetration testing to understand filtering, routing, and firewall behavior.
+	•	Helps attackers or defenders learn how traffic flows to a given TCP port.
+
+⸻
+
+3. How does InTrace work?
+	1.	You specify a target IP/hostname and a TCP port (e.g., 80 for HTTP).
+	2.	InTrace attaches to an active TCP session or establishes one.
+	3.	It listens for ICMP Time Exceeded messages generated as packets traverse routers.
+	4.	Each router hop that decrements the TTL (time-to-live) responds with ICMP → InTrace records it.
+	5.	The result is a hop-by-hop traceroute of the TCP session path.
+
+⸻
+
+4. Exact Use Case (Lab Example)
+
+Command:
+
+intrace -h example.com -p 80 -s 4
+
+Observed Output:
+
+=========================[ InTrace 1.6 ]========================
+Remote: 2600:1406:5e00:6::17ce:bc12/0 (80)
+Local: ::/0
+Payload Size: 4 bytes, Seq: 0x00000000, Ack: 0x00000000
+Status: Sniffing for connection packets
+
+	•	No hops displayed → means no ICMP responses were received (likely filtered or blocked).
+	•	In controlled labs, successful runs show each router hop (src addr, icmp src addr, pkt type).
+
+Interpretation:
+	•	For example.com:80, ICMP responses were blocked → traceroute did not reveal intermediate routers.
+	•	This is normal for hardened/public servers (they suppress traceroute data).
+
+⸻
+
+5. Practical Workflow
+	•	Traceroute via HTTP (port 80):
+
+intrace -h target.com -p 80 -s 4
+
+	•	Traceroute via HTTPS (port 443):
+
+intrace -h target.com -p 443 -s 4
+
+	•	Traceroute via a custom service (Node.js app on port 3000):
+
+intrace -h target.com -p 3000 -s 4
+
+
+⸻
+
+6. Limitations
+	•	Requires root/admin privileges (needs raw socket access).
+	•	Will not work if ICMP “Time Exceeded” packets are filtered.
+	•	Only maps the path for a specific TCP port.
+	•	Output may be empty against secure/public domains (like example.com).
+	•	IPv6 often complicates results (not all devices reply).
+
+⸻
+
+7. Summary
+	•	What: InTrace is a TCP-based traceroute tool.
+	•	Why: To discover network paths even when ICMP is blocked.
+	•	How: Uses TCP sessions to elicit ICMP “Time Exceeded” packets.
+	•	Use Case: Against example.com:80, no hops were revealed (ICMP blocked).
+
+👉 In short:
+InTrace is valuable for stealth traceroute in penetration testing labs, but in modern hardened networks, its results are often limited due to ICMP filtering.
+
+⸻

@@ -1,0 +1,90 @@
+⸻
+
+✅ Acknowledgement Report: ident-user-enum – Ident Service User Enumeration Tool (Kali Linux)
+
+🔗 Official Tool Documentation: [Kali Linux ident-user-enum Tool Page] ￼
+
+⸻
+
+1. What is ident-user-enum?
+
+ident-user-enum is a simple Perl-based tool that queries the Ident service (TCP port 113) to determine the operating system user account associated with processes listening on specified TCP ports on a target system. ￼ ￼
+
+⸻
+
+2. Why Use ident-user-enum?
+	•	Identify Process Owners: Helps you discover which user account (like root, apache, or others) is running a particular service.
+	•	Attack Prioritization: Services running under privileged accounts like root often present higher-value targets.
+	•	Support for Other Attacks: The user information gathered can be used to build username lists for password attacks or privilege escalation attempts. ￼ ￼
+
+⸻
+
+3. How Does ident-user-enum Work?
+	1.	It sends an Ident protocol query to the target’s port 113 (identd daemon).
+	2.	Based on the response, the tool correlates each specified TCP port to the OS user that owns the listening process.
+	3.	It outputs results like:
+
+192.168.1.13:22   root
+192.168.1.13:139  root
+192.168.1.13:445  root
+``` [oai_citation:5‡Kali Linux](https://www.kali.org/tools/ident-user-enum/?utm_source=chatgpt.com)
+
+---
+
+### 4. Example Use Case (Lab Scenario)
+
+**Command:**
+
+```bash
+ident-user-enum 192.168.1.13 22 139 445
+
+Output:
+
+192.168.1.13:22    root
+192.168.1.13:139   root
+192.168.1.13:445   root
+
+Interpretation:
+	•	Services on ports 22 (SSH), 139 (SMB), and 445 (SMB over TCP) are all running under the root user.
+	•	This suggests these services might be high-priority targets in penetration testing.
+
+⸻
+
+5. Practical Workflow
+
+Installation:
+
+sudo apt install ident-user-enum
+
+Basic Usage:
+
+ident-user-enum <target_ip> <port1> <port2> ...
+
+Example:
+
+ident-user-enum 10.11.1.136 22 113 139 445
+
+This checks who is running services on those ports. ￼
+
+⸻
+
+6. Limitations & Constraints
+	•	Reliant on identd: The target must have the ident service (RFC 1413) running and configured to allow queries.
+	•	Low Availability: Most modern systems disable ident by default due to privacy and security concerns.
+	•	Not Real-time: Only identifies who listens on a port, not who connected or is currently using it.
+	•	Risk of Detection: Ident can expose internal usernames and is considered noisy—some systems may log or block such probes.
+
+⸻
+
+7. Summary
+	•	What: A Perl-based tool to map TCP ports to their owning OS user via the Ident protocol.
+	•	Why: Useful for understanding risk scope (e.g., root-level services) and building attacks.
+	•	How: Queries identd on port 113 and correlates the response with each port.
+	•	Use Case: Identified root users for SSH/SMB in lab, confirming elevated privileges.
+
+⸻
+
+In short:
+ident-user-enum is a niche but effective tool for enumerating service owners on systems where identd is enabled—great for legacy environments and CTFs. In modern environments, it’s often replaced or supplemented by tools like pspy, lsof, or SMB enumeration scripts when permissions allow.
+
+⸻

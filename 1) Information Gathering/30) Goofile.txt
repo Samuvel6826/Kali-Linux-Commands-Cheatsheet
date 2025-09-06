@@ -1,0 +1,93 @@
+⸻
+
+✅ Acknowledgement: Goofile – Google File Search Utility (Kali Linux)
+
+🔗 Official Tool Page: https://www.kali.org/tools/goofile/
+
+⸻
+
+1. What is Goofile?
+
+Goofile is an OSINT (Open-Source Intelligence) tool that uses Google search queries to find publicly accessible files of specific types (e.g., PDF, DOCX, XLS, PPT, TXT, etc.) on a given domain.
+
+It helps penetration testers and security researchers discover sensitive information leakage without directly touching the target’s infrastructure.
+
+⸻
+
+2. Why use it?
+	•	Identify sensitive documents exposed on the internet.
+	•	Discover metadata leaks (e.g., usernames, software versions in file properties).
+	•	Collect reconnaissance information before an attack (red team).
+	•	Check your own organization for unintended file exposure (blue team).
+
+⸻
+
+3. How does Goofile work?
+	1.	Takes a target domain and a file extension type.
+	2.	Sends Google queries like:
+
+site:target.com filetype:pdf
+
+
+	3.	Scrapes and lists the results (URLs of discovered files).
+	4.	Analyst can then manually review or download these files.
+
+⸻
+
+4. Exact Use Case (Lab Example)
+
+Command:
+
+goofile -d example.com -f pdf
+
+Sample Output (Example):
+
+[+] Searching for files: pdf
+http://www.example.com/documents/policy.pdf
+http://www.example.com/reports/financial-report.pdf
+
+Interpretation:
+	•	Found PDF files hosted on example.com.
+	•	These documents may contain metadata (author names, software versions) → could aid social engineering or vulnerability research.
+
+⸻
+
+5. Practical Workflow
+	•	Search for PDFs:
+
+goofile -d target.com -f pdf
+
+	•	Search for Word docs:
+
+goofile -d target.com -f docx
+
+	•	Search for Excel sheets:
+
+goofile -d target.com -f xls
+
+	•	Search for all types (loop through multiple):
+
+for ext in pdf docx xls ppt txt; do goofile -d target.com -f $ext; done
+
+
+⸻
+
+6. Limitations
+	•	Relies on Google search results → requires internet and may be rate-limited.
+	•	If Google blocks automated queries, results may fail.
+	•	Only finds indexed files (not hidden or blocked by robots.txt).
+	•	Cannot directly download files — only lists their links.
+
+⸻
+
+7. Summary
+	•	What: Goofile searches Google for publicly exposed files on a domain.
+	•	Why: Helps identify sensitive documents and metadata leaks.
+	•	How: Automates site:domain filetype:ext queries.
+	•	Use Case: On example.com, it could list PDFs, DOCs, or spreadsheets available online.
+
+👉 In short:
+Goofile = A Google hacking tool for quick reconnaissance of exposed files.
+Great for OSINT & pentesting, but limited by Google’s indexing and query restrictions.
+
+⸻
